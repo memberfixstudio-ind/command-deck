@@ -1,0 +1,284 @@
+/* Command Deck. Uses the admin colour scheme's accent where WordPress provides it. */
+
+.cd-root {
+	--cd-accent: var(--wp-admin-theme-color, #2271b1);
+	--cd-bg: #ffffff;
+	--cd-text: #1e1e1e;
+	--cd-muted: #6b6f76;
+	--cd-line: #ececef;
+	--cd-hover: #f4f5f7;
+	--cd-kbd: #f1f2f4;
+	position: fixed;
+	inset: 0;
+	z-index: 1000000;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 12vh 16px 16px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.cd-root[hidden] {
+	display: none;
+}
+
+.cd-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(16, 18, 24, 0.38);
+	backdrop-filter: blur(3px);
+	opacity: 0;
+	transition: opacity 0.16s ease;
+}
+
+.cd-panel {
+	position: relative;
+	width: 100%;
+	max-width: 640px;
+	max-height: min(560px, 76vh);
+	display: flex;
+	flex-direction: column;
+	background: var(--cd-bg);
+	color: var(--cd-text);
+	border-radius: 14px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 24px 60px -12px rgba(16, 18, 24, 0.35), 0 8px 20px -8px rgba(16, 18, 24, 0.2);
+	overflow: hidden;
+	opacity: 0;
+	transform: translateY(-6px) scale(0.985);
+	transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.cd-root.is-open .cd-backdrop,
+.cd-root.is-open .cd-panel {
+	opacity: 1;
+	transform: none;
+}
+
+.cd-search {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 0 18px;
+	border-bottom: 1px solid var(--cd-line);
+}
+
+.cd-search-icon {
+	width: 20px;
+	height: 20px;
+	flex: none;
+	fill: none;
+	stroke: var(--cd-muted);
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+
+.cd-root .cd-input,
+.cd-root .cd-input:focus {
+	flex: 1;
+	min-width: 0;
+	height: 58px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	outline: none;
+	font-size: 17px;
+	color: var(--cd-text);
+}
+
+.cd-root .cd-input::placeholder {
+	color: #9a9ea6;
+}
+
+.cd-root kbd {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+	padding: 0 5px;
+	margin: 0 1px;
+	border-radius: 5px;
+	background: var(--cd-kbd);
+	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+	font: 500 11px/1 inherit;
+	color: var(--cd-muted);
+}
+
+.cd-esc {
+	cursor: default;
+}
+
+.cd-list {
+	flex: 1;
+	margin: 0;
+	padding: 6px 8px 8px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	list-style: none;
+}
+
+.cd-group {
+	margin: 10px 10px 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--cd-muted);
+}
+
+.cd-group:first-child {
+	margin-top: 6px;
+}
+
+.cd-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 40px;
+	margin: 0;
+	padding: 0 12px;
+	border-radius: 9px;
+	font-size: 14px;
+	cursor: pointer;
+	scroll-margin: 8px;
+}
+
+.cd-item.is-active {
+	background: var(--cd-hover);
+	box-shadow: inset 3px 0 0 var(--cd-accent);
+}
+
+.cd-title {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.cd-title mark {
+	background: none;
+	color: var(--cd-accent);
+	font-weight: 600;
+}
+
+.cd-meta {
+	flex: none;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: var(--cd-kbd);
+	font-size: 12px;
+	color: var(--cd-muted);
+}
+
+.cd-enter {
+	flex: none;
+	width: 16px;
+	font-size: 13px;
+	color: var(--cd-muted);
+	opacity: 0;
+	transition: opacity 0.1s ease;
+}
+
+.cd-item.is-active .cd-enter {
+	opacity: 1;
+}
+
+.cd-note {
+	padding: 22px 12px;
+	text-align: center;
+	font-size: 14px;
+	color: var(--cd-muted);
+}
+
+.cd-note.is-loading {
+	padding: 12px;
+	font-size: 13px;
+}
+
+.cd-footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 18px;
+	padding: 10px 18px;
+	border-top: 1px solid var(--cd-line);
+	background: #fbfbfc;
+	font-size: 12px;
+	color: var(--cd-muted);
+}
+
+.cd-brand {
+	margin-left: auto;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+}
+
+html.cd-locked {
+	overflow: hidden;
+}
+
+/* Admin bar trigger */
+#wpadminbar #wp-admin-bar-command-deck > .ab-item {
+	display: flex;
+	align-items: center;
+}
+
+#wpadminbar .cd-bar-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 22px;
+	margin-top: 5px;
+	padding: 0 6px 0 8px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.1);
+	line-height: 22px;
+}
+
+#wpadminbar .cd-bar-trigger .ab-icon {
+	margin: 0;
+	padding: 0;
+	top: 0;
+}
+
+#wpadminbar .cd-bar-trigger .ab-icon::before {
+	font-size: 16px;
+	top: 3px;
+}
+
+#wpadminbar .cd-bar-kbd {
+	padding: 0 5px;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.14);
+	font: 500 11px/18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	color: inherit;
+}
+
+@media screen and (max-width: 782px) {
+	.cd-root {
+		padding-top: 56px;
+	}
+
+	.cd-footer {
+		display: none;
+	}
+
+	#wp-admin-bar-command-deck {
+		display: block !important;
+	}
+
+	#wpadminbar .cd-bar-label,
+	#wpadminbar .cd-bar-kbd {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cd-backdrop,
+	.cd-panel {
+		transition: none;
+	}
+}
