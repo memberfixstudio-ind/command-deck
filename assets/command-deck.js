@@ -121,7 +121,7 @@
 					} )
 					.map( function ( r ) {
 						return {
-							title: decode( r.title || '(no title)' ),
+							title: decode( r.title || t.untitled ),
 							url: data.adminUrl + 'post.php?post=' + r.id + '&action=edit',
 							group: t.content,
 							meta: r.subtype,

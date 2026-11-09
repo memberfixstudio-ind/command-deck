@@ -180,7 +180,26 @@ function command_deck_actions() {
 	 *
 	 * @param array[] $allowed Actions the current user may run.
 	 */
-	return apply_filters( 'command_deck_actions', $allowed );
+	$filtered = apply_filters( 'command_deck_actions', $allowed );
+	if ( ! is_array( $filtered ) ) {
+		return $allowed;
+	}
+
+	// The palette opens these URLs from JavaScript, so drop malformed entries and
+	// anything with a protocol WordPress does not allow (such as javascript:).
+	$safe = array();
+	foreach ( $filtered as $action ) {
+		if ( ! is_array( $action ) || empty( $action['title'] ) || empty( $action['url'] ) || ! is_string( $action['title'] ) ) {
+			continue;
+		}
+		$action['url'] = esc_url_raw( (string) $action['url'] );
+		if ( '' === $action['url'] ) {
+			continue;
+		}
+		$safe[] = $action;
+	}
+
+	return $safe;
 }
 
 /**
@@ -199,6 +218,7 @@ function command_deck_print_data() {
 		'isMac'     => isset( $_SERVER['HTTP_USER_AGENT'] ) && false !== stripos( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ), 'Mac' ),
 		'i18n'      => array(
 			'placeholder' => __( 'Search screens, posts, pages and users…', 'command-deck' ),
+			'untitled'    => __( '(no title)', 'command-deck' ),
 			'empty'       => __( 'Nothing matches. Try a shorter word.', 'command-deck' ),
 			'searching'   => __( 'Searching your content…', 'command-deck' ),
 			'content'     => __( 'Content', 'command-deck' ),
