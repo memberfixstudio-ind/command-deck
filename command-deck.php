@@ -11,6 +11,7 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       command-deck
+ * Domain Path:       /languages
  *
  * @package CommandDeck
  */
@@ -19,6 +20,14 @@ defined( 'ABSPATH' ) || exit;
 
 define( 'COMMAND_DECK_VERSION', '1.0.0' );
 define( 'COMMAND_DECK_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Load translations for sites that ship their own .mo files in /languages.
+ */
+function command_deck_load_textdomain() {
+	load_plugin_textdomain( 'command-deck', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+add_action( 'init', 'command_deck_load_textdomain' );
 
 /**
  * Load the palette on every admin screen for users who can edit content.
