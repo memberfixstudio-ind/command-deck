@@ -1,5 +1,7 @@
 # Command Deck
 
+[Screenshots and step-by-step setup tutorial](https://memberfix.studio/plugins/command-deck/)
+
 **Press ⌘K (or Ctrl+K) anywhere in wp-admin and go straight to what you want.**
 
 WordPress admin menus get long fast. Command Deck puts one search box on top of all of it: every admin screen, your posts and pages, your users and common actions, all reachable without touching the sidebar.
