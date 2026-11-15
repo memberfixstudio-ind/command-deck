@@ -369,6 +369,11 @@
 	}
 
 	function onKey( e ) {
+		// While an IME is composing (Japanese, Chinese, Korean...), Enter and the arrow
+		// keys belong to the composition, so don't open a result or move the selection.
+		if ( e.isComposing || e.keyCode === 229 ) {
+			return;
+		}
 		var count = state.items.length;
 		if ( e.key === 'ArrowDown' ) {
 			e.preventDefault();
