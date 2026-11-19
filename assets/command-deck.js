@@ -95,10 +95,19 @@
 		return el.value;
 	}
 
-	function searchRemote( query ) {
+	// Drops any pending or in-flight search so a slow response for an older
+	// query can't show up under what the user has typed since.
+	function cancelSearch() {
+		window.clearTimeout( state.timer );
 		if ( state.controller ) {
 			state.controller.abort();
+			state.controller = null;
 		}
+		state.loading = false;
+	}
+
+	function searchRemote( query ) {
+		cancelSearch();
 		if ( query.trim().length < 2 || ! window.wp || ! window.wp.apiFetch ) {
 			state.remote = [];
 			state.loading = false;
@@ -345,6 +354,7 @@
 			return;
 		}
 		state.open = false;
+		cancelSearch();
 		els.root.classList.remove( 'is-open' );
 		document.documentElement.classList.remove( 'cd-locked' );
 		window.setTimeout( function () {
@@ -361,7 +371,7 @@
 		state.query = els.input.value;
 		state.active = 0;
 		state.remote = [];
-		window.clearTimeout( state.timer );
+		cancelSearch();
 		render();
 		state.timer = window.setTimeout( function () {
 			searchRemote( state.query );
